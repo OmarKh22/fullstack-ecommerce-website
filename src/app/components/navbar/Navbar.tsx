@@ -27,6 +27,7 @@ import {
   SlidersHorizontal,
   Flame
 } from 'lucide-react';
+import Link from 'next/link';
 
 // Interfaces for component state
 interface CartItem {
@@ -218,9 +219,9 @@ export default function EcommerceNavbar() {
             </div>
             
             <div className="hidden md:flex items-center space-x-6 text-xs text-muted-foreground">
-              <a href="#store-locator" className="hover:text-primary-foreground transition-colors">Store Locator</a>
-              <a href="#track-order" className="hover:text-primary-foreground transition-colors">Track Order</a>
-              <a href="#support" className="hover:text-primary-foreground transition-colors">Help & Support</a>
+              <Link href="/store-locator" className="hover:text-primary-foreground transition-colors">Store Locator</Link>
+              <Link href="/track-order" className="hover:text-primary-foreground transition-colors">Track Order</Link>
+              <Link href="/support" className="hover:text-primary-foreground transition-colors">Help & Support</Link>
               <button
                 onClick={() => setShowPromoBanner(false)}
                 className="text-primary-foreground/70 hover:text-primary-foreground ml-2 p-0.5 rounded transition-colors"
@@ -261,7 +262,7 @@ export default function EcommerceNavbar() {
 
             {/* Brand Logo / Title */}
             <div className="flex items-center">
-              <a href="#" className="flex items-center space-x-2 group">
+              <Link href="/" className="flex items-center space-x-2 group">
                 <div className="w-9 h-9 md:w-10 md:h-10 bg-primary text-primary-foreground rounded-xl flex items-center justify-center font-black text-xl shadow-md group-hover:bg-primary-hover transition-colors">
                   N
                 </div>
@@ -273,7 +274,7 @@ export default function EcommerceNavbar() {
                     E-Commerce Platform
                   </span>
                 </div>
-              </a>
+              </Link>
             </div>
 
             {/* Central Interactive Search Bar */}
@@ -361,7 +362,7 @@ export default function EcommerceNavbar() {
                   </ul>
                   <div className="p-3 bg-surface border-t border-border flex items-center justify-between text-xs text-muted-foreground">
                     <span>Trending in <strong>{selectedCategory}</strong></span>
-                    <a href="#" className="text-accent hover:underline font-medium">Browse catalog →</a>
+                    <Link href="/catalog" className="text-accent hover:underline font-medium">Browse catalog →</Link>
                   </div>
                 </div>
               )}
@@ -373,8 +374,8 @@ export default function EcommerceNavbar() {
 
 
               {/* Wishlist Button */}
-              <a
-                href="#wishlist"
+              <Link
+                href="/wishlist"
                 className="relative p-2.5 text-foreground hover:bg-surface rounded-xl transition-colors flex items-center justify-center group"
                 aria-label="View Wishlist"
               >
@@ -384,11 +385,11 @@ export default function EcommerceNavbar() {
                     {wishlistCount}
                   </span>
                 )}
-              </a>
+              </Link>
 
               {/* Cart Drawer Trigger */}
-              <button
-                onClick={() => setIsCartDrawerOpen(true)}
+              <Link
+                href="/cart"  
                 className="relative p-2.5 text-foreground hover:bg-surface rounded-xl transition-colors flex items-center justify-center group"
                 aria-label="Open Shopping Cart"
               >
@@ -398,7 +399,7 @@ export default function EcommerceNavbar() {
                     {cartItemCount}
                   </span>
                 )}
-              </button>
+              </Link>
 
               {/* User Account Menu Dropdown */}
               <div className="relative">
@@ -424,27 +425,27 @@ export default function EcommerceNavbar() {
                       <p className="text-[11px] text-muted-foreground truncate">test@test.com</p>
                     </div>
                     <div className="py-1">
-                      <a href="#orders" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
+                      <Link href="/orders" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
                         <Package className="w-4 h-4 text-muted-foreground" />
                         <span>My Orders & Returns</span>
-                      </a>
-                      <a href="#wishlist" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
+                      </Link>
+                      <Link href="/wishlist" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
                         <Heart className="w-4 h-4 text-muted-foreground" />
                         <span>Saved Wishlist ({wishlistCount})</span>
-                      </a>
-                      <a href="#settings" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
+                      </Link>
+                      <Link href="/settings" className="flex items-center gap-2.5 px-3 py-2 text-xs text-foreground hover:bg-surface rounded-lg transition-colors">
                         <Settings className="w-4 h-4 text-muted-foreground" />
                         <span>Account Settings</span>
-                      </a>
+                      </Link>
                     </div>
                     <div className="pt-1 border-t border-border">
-                      <button
-                        onClick={() => setIsAccountMenuOpen(false)}
+                      <Link
+                        href="/logout"
                         className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Sign Out</span>
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -541,13 +542,13 @@ export default function EcommerceNavbar() {
                                 </h4>
                                 <div className="grid grid-cols-2 gap-2">
                                   {activeCat.subcategories.map((sub, idx) => (
-                                    <a
+                                    <Link
                                       key={idx}
-                                      href={`#${sub.toLowerCase().replace(/\s+/g, '-')}`}
+                                      href={`/${sub.toLowerCase().replace(/\s+/g, '-')}`}
                                       className="p-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
                                     >
                                       {sub}
-                                    </a>
+                                    </Link>
                                   ))}
                                 </div>
                               </div>
@@ -561,9 +562,9 @@ export default function EcommerceNavbar() {
                             <span className="text-[10px] font-bold text-accent uppercase tracking-wider">New Arrival</span>
                             <p className="text-xs font-bold text-foreground">Explore Next-Gen Smart Home Setup</p>
                           </div>
-                          <a href="#featured" className="text-xs font-semibold bg-primary text-primary-foreground px-3 py-1.5 rounded-lg hover:bg-primary-hover transition-colors">
+                          <Link href="/featured" className="text-xs font-semibold bg-primary text-primary-foreground px-3 py-1.5 rounded-lg hover:bg-primary-hover transition-colors">
                             Shop Now
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -572,35 +573,35 @@ export default function EcommerceNavbar() {
 
                 {/* Secondary Links */}
                 <nav className="flex items-center space-x-6 text-foreground font-medium">
-                  <a href="#trending" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+                  <Link href="/trending" className="flex items-center gap-1.5 hover:text-accent transition-colors">
                     <TrendingUp className="w-3.5 h-3.5 text-accent" />
                     <span>Trending</span>
-                  </a>
-                  <a href="#flash-deals" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+                  </Link>
+                  <Link href="/flash-deals" className="flex items-center gap-1.5 hover:text-accent transition-colors">
                     <Zap className="w-3.5 h-3.5 text-amber-500" />
                     <span>Flash Sales</span>
                     <span className="bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full uppercase">HOT</span>
-                  </a>
-                  <a href="#new" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+                  </Link>
+                  <Link href="/new" className="flex items-center gap-1.5 hover:text-accent transition-colors">
                     <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
                     <span>New Arrivals</span>
-                  </a>
-                  <a href="#brands" className="hover:text-accent transition-colors">
+                  </Link>
+                  <Link href="/brands" className="hover:text-accent transition-colors">
                     Top Brands
-                  </a>
-                  <a href="#clearance" className="hover:text-accent transition-colors">
+                  </Link>
+                  <Link href="/clearance" className="hover:text-accent transition-colors">
                     Clearance
-                  </a>
+                  </Link>
                 </nav>
 
               </div>
 
               {/* Right Side Quick Promotion */}
               <div className="flex items-center space-x-4 text-muted-foreground">
-                <a href="#todays-deals" className="flex items-center gap-1 text-accent font-semibold hover:underline">
+                <Link href="/todays-deals" className="flex items-center gap-1 text-accent font-semibold hover:underline">
                   <Percent className="w-3.5 h-3.5" />
                   <span>Today's Special Deals</span>
-                </a>
+                </Link>
               </div>
 
             </div>
@@ -673,22 +674,28 @@ export default function EcommerceNavbar() {
                 <div className="space-y-4">
                   <div className="space-y-1">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Explore</p>
-                    <a href="#trending" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
+                    <Link href="/trending" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
                       <TrendingUp className="w-4 h-4 text-accent" /> Trending Products
-                    </a>
-                    <a href="#flash" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
+                    </Link>
+                    <Link href="/flash" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
                       <Zap className="w-4 h-4 text-amber-500" /> Flash Deals
-                    </a>
-                    <a href="#new" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
+                    </Link>
+                    <Link href="/new" className="flex items-center gap-3 p-2.5 text-sm font-semibold text-foreground rounded-xl hover:bg-surface">
                       <Sparkles className="w-4 h-4 text-indigo-500" /> New Arrivals
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="pt-4 border-t border-border space-y-1">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Customer Service</p>
-                    <a href="#orders" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">Track My Order</a>
-                    <a href="#shipping" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">Shipping Info</a>
-                    <a href="#help" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">Help Center</a>
+                    <Link href="/orders" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">
+                      Track My Order
+                    </Link>
+                    <Link href="/shipping" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">
+                      Shipping Info
+                    </Link>
+                    <Link href="/help" className="block p-2 text-xs text-foreground hover:bg-surface rounded-lg">
+                      Help Center
+                    </Link>
                   </div>
                 </div>
               )}
@@ -703,9 +710,9 @@ export default function EcommerceNavbar() {
                       </div>
                       <div className="space-y-1.5 pl-6 border-l-2 border-border">
                         {cat.subcategories.map((sub, idx) => (
-                          <a key={idx} href="#" className="block text-xs text-muted-foreground hover:text-foreground py-0.5">
+                          <Link key={idx} href="/" className="block text-xs text-muted-foreground hover:text-foreground py-0.5">
                             {sub}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -725,15 +732,15 @@ export default function EcommerceNavbar() {
                     </div>
                   </div>
                   <div className="space-y-1 pt-2">
-                    <a href="#orders" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
+                    <Link href="/orders" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
                       <Package className="w-4 h-4 text-muted-foreground" /> My Orders
-                    </a>
-                    <a href="#wishlist" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
+                    </Link>
+                    <Link href="/wishlist" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
                       <Heart className="w-4 h-4 text-muted-foreground" /> Wishlist ({wishlistCount})
-                    </a>
-                    <a href="#settings" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
+                    </Link>
+                    <Link href="/settings" className="flex items-center gap-2.5 p-2.5 text-xs text-foreground rounded-lg hover:bg-surface">
                       <Settings className="w-4 h-4 text-muted-foreground" /> Settings
-                    </a>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -878,11 +885,11 @@ export default function EcommerceNavbar() {
       {/* 6. MOBILE STICKY BOTTOM NAVIGATION BAR                                  */}
       {/* ------------------------------------------------------------------------ */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border z-30 px-2 py-1.5 flex items-center justify-around shadow-lg">
-        <a href="#" className="flex flex-col items-center p-1 text-accent">
+        <Link href="/" className="flex flex-col items-center p-1 text-accent">
           <Home className="w-5 h-5" />
           <span className="text-[10px] font-medium mt-0.5">Home</span>
-        </a>
-        
+        </Link>
+
         <button
           onClick={() => { setIsMobileDrawerOpen(true); setMobileTab('categories'); }}
           className="flex flex-col items-center p-1 text-muted-foreground hover:text-foreground"
@@ -891,7 +898,7 @@ export default function EcommerceNavbar() {
           <span className="text-[10px] font-medium mt-0.5">Categories</span>
         </button>
 
-        <a href="#wishlist" className="flex flex-col items-center p-1 text-muted-foreground hover:text-foreground relative">
+        <Link href="/wishlist" className="flex flex-col items-center p-1 text-muted-foreground hover:text-foreground relative">
           <Heart className="w-5 h-5" />
           <span className="text-[10px] font-medium mt-0.5">Wishlist</span>
           {wishlistCount > 0 && (
@@ -899,7 +906,7 @@ export default function EcommerceNavbar() {
               {wishlistCount}
             </span>
           )}
-        </a>
+        </Link>
 
         <button
           onClick={() => setIsCartDrawerOpen(true)}
