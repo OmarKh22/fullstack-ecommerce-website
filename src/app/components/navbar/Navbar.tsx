@@ -28,6 +28,7 @@ import {
   Flame
 } from 'lucide-react';
 import Link from 'next/link';
+import { useCart } from '@/app/context/CartContext';
 
 // Interfaces for component state
 interface CartItem {
@@ -110,26 +111,16 @@ export default function EcommerceNavbar() {
   const [mobileTab, setMobileTab] = useState<'menu' | 'categories' | 'account'>('menu');
 
   // Interactive Cart Drawer & Wishlist State
-  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState<boolean>(false);
-  const [wishlistCount, setWishlistCount] = useState<number>(3);
-  const [cart, setCart] = useState<CartItem[]>([
-    {
-      id: '1',
-      name: 'Wireless Noise-Canceling Headphones',
-      price: 199.99,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&auto=format&fit=crop&q=80',
-      variant: 'Matte Black'
-    },
-    {
-      id: '2',
-      name: 'Smart Fitness Watch Series 7',
-      price: 149.50,
-      quantity: 2,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&auto=format&fit=crop&q=80',
-      variant: '44mm Charcoal'
-    }
-  ]);
+  const {
+    cart,
+    cartItemCount,
+    cartSubtotal,
+    updateQuantity,
+    removeItem,
+    isCartDrawerOpen,
+    setIsCartDrawerOpen
+  } = useCart();
+  const [wishlistCount] = useState<number>(3);
 
   // Handle Ctrl+K shortcut for Search focusing
   useEffect(() => {
@@ -148,57 +139,6 @@ export default function EcommerceNavbar() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  // Cart helper functions
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
-  const cartSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  const updateQuantity = (id: string, delta: number) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) => {
-          if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-  };
-
-  const handleAddToCartDemo = () => {
-    const randomItems: Omit<CartItem, 'quantity'>[] = [
-      {
-        id: Date.now().toString(),
-        name: 'Mechanical RGB Keyboard',
-        price: 89.99,
-        image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=150&auto=format&fit=crop&q=80',
-        variant: 'Tactile Switches'
-      },
-      {
-        id: Date.now().toString(),
-        name: 'Ultra-Wide Curved Gaming Monitor',
-        price: 429.00,
-        image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=150&auto=format&fit=crop&q=80',
-        variant: '34-Inch 144Hz'
-      }
-    ];
-
-    const newItem = randomItems[Math.floor(Math.random() * randomItems.length)];
-    
-    setCart(prev => {
-      const existing = prev.find(i => i.name === newItem.name);
-      if (existing) {
-        return prev.map(i => i.name === newItem.name ? { ...i, quantity: i.quantity + 1 } : i);
-      }
-      return [...prev, { ...newItem, quantity: 1 }];
-    });
-  };
 
   return (
     <div className="w-full bg-background text-foreground font-sans antialiased selection:bg-accent selection:text-accent-foreground">
@@ -388,9 +328,9 @@ export default function EcommerceNavbar() {
               </Link>
 
               {/* Cart Drawer Trigger */}
-              <Link
-                href="/cart"  
-                className="relative p-2.5 text-foreground hover:bg-surface rounded-xl transition-colors flex items-center justify-center group"
+              <button
+                onClick={() => setIsCartDrawerOpen(true)}
+                className="relative p-2.5 text-foreground hover:bg-surface rounded-xl transition-colors flex items-center justify-center group cursor-pointer"
                 aria-label="Open Shopping Cart"
               >
                 <ShoppingCart className="w-5 h-5 text-foreground group-hover:text-accent transition-colors" />
@@ -399,7 +339,7 @@ export default function EcommerceNavbar() {
                     {cartItemCount}
                   </span>
                 )}
-              </Link>
+              </button>
 
               {/* User Account Menu Dropdown */}
               <div className="relative">
@@ -600,7 +540,7 @@ export default function EcommerceNavbar() {
               <div className="flex items-center space-x-4 text-muted-foreground">
                 <Link href="/todays-deals" className="flex items-center gap-1 text-accent font-semibold hover:underline">
                   <Percent className="w-3.5 h-3.5" />
-                  <span>Today's Special Deals</span>
+                  <span>Today&apos;s Special Deals</span>
                 </Link>
               </div>
 
@@ -791,13 +731,14 @@ export default function EcommerceNavbar() {
                 <div className="h-full flex flex-col items-center justify-center text-center p-6 text-muted-foreground">
                   <ShoppingCart className="w-12 h-12 stroke-1 mb-3 opacity-40" />
                   <p className="font-semibold text-foreground text-base">Your cart is empty</p>
-                  <p className="text-xs mt-1 max-w-xs">Looks like you haven't added anything to your cart yet.</p>
-                  <button
+                  <p className="text-xs mt-1 max-w-xs">Looks like you haven&apos;t added anything to your cart yet.</p>
+                  <Link
+                    href="/catalog"
                     onClick={() => setIsCartDrawerOpen(false)}
                     className="mt-4 bg-primary text-primary-foreground text-xs font-semibold px-4 py-2 rounded-xl hover:bg-primary-hover transition-colors"
                   >
                     Start Shopping
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 cart.map((item) => (
@@ -872,9 +813,22 @@ export default function EcommerceNavbar() {
                   </div>
                 </div>
 
-                <button className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-3 rounded-xl shadow-md transition-colors text-sm flex items-center justify-center gap-2">
-                  <span>Proceed to Checkout</span>
-                </button>
+                <div className="flex gap-2">
+                  <Link
+                    href="/cart"
+                    onClick={() => setIsCartDrawerOpen(false)}
+                    className="flex-1 border border-border bg-surface hover:bg-background text-foreground font-semibold py-3 rounded-xl transition-colors text-xs sm:text-sm flex items-center justify-center text-center"
+                  >
+                    View Cart
+                  </Link>
+                  <Link
+                    href="/cart"
+                    onClick={() => setIsCartDrawerOpen(false)}
+                    className="flex-1 bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-3 rounded-xl shadow-md transition-colors text-xs sm:text-sm flex items-center justify-center text-center"
+                  >
+                    Checkout
+                  </Link>
+                </div>
               </div>
             )}
           </div>

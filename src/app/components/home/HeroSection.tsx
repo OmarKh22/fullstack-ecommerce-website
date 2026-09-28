@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCart } from '@/app/context/CartContext';
 
 interface HeroSlide {
   id: string;
@@ -134,6 +135,7 @@ const FEATURED_CARDS = [
 ];
 
 export default function EcommerceHeroSection() {
+  const { addToCart } = useCart();
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isAutoplay, setIsAutoplay] = useState<boolean>(true);
   const [selectedVariantId, setSelectedVariantId] = useState<string>('');
@@ -147,6 +149,7 @@ export default function EcommerceHeroSection() {
   // Set default variant when slide changes
   useEffect(() => {
     if (slide.variants.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedVariantId(slide.variants[0].id);
     }
   }, [currentSlideIndex]);
@@ -169,7 +172,18 @@ export default function EcommerceHeroSection() {
   };
 
   const handleAddToCart = () => {
-    setCartCount(prev => prev + 1);
+    addToCart(
+      {
+        id: `${slide.id}-${activeVariant.id}`,
+        name: slide.title,
+        price: slide.price,
+        originalPrice: slide.originalPrice,
+        image: activeVariant.image,
+        variant: activeVariant.name
+      },
+      true
+    );
+    setCartCount((prev) => prev + 1);
     setAddedToast(true);
     setTimeout(() => setAddedToast(false), 2500);
   };
